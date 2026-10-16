@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 namespace Bai3_MdiSupermarket
 {
-    // Một dòng của báo cáo doanh thu
     public class RevenueRow
     {
         public string Month { get; set; } = "";
@@ -17,9 +16,9 @@ namespace Bai3_MdiSupermarket
 
     public partial class frmAsyncReport : Form
     {
-        private int clickCount = 0;                              // Đếm số lần bấm nút thử UI
-        private int totalNewOrders = 0;                          // Tổng đơn mới (chỉ đọc/ghi trên UI thread)
-        private CancellationTokenSource syncCts = null;          // Dùng để dừng tiến trình đồng bộ nền
+        private int clickCount = 0;                            
+        private int totalNewOrders = 0;                        
+        private CancellationTokenSource syncCts = null;          
 
         public frmAsyncReport()
         {
@@ -32,18 +31,14 @@ namespace Bai3_MdiSupermarket
             dgvSync.Columns.Add("colRate", "Tỷ giá");
             dgvSync.Columns.Add("colOrders", "Đơn mới");
 
-            StartSync();                                         // Tự chạy đồng bộ nền khi mở form
+            StartSync();                                       
         }
 
-        // Dừng tiến trình nền khi đóng form để tránh cập nhật vào form đã hủy
         private void frmAsyncReport_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopSync();
         }
 
-        // =====================================================================
-        // Scenario B: tải dữ liệu bất đồng bộ với async / await + Task.Run
-        // =====================================================================
         private async void btnLoadReport_Click(object sender, EventArgs e)
         {
             frmMain main = this.MdiParent as frmMain;            // Lưu lại form cha để còn dùng sau khi await
@@ -54,14 +49,10 @@ namespace Bai3_MdiSupermarket
 
             try
             {
-                // Task.Run đẩy BuildRevenueReport xuống thread phụ (ThreadPool).
-                // await: UI thread được "thả ra" để tiếp tục xử lý chuột/phím/menu,
-                // khi tác vụ xong thì code bên dưới tự chạy tiếp TRÊN UI thread.
                 List<RevenueRow> rows = await Task.Run(() => BuildRevenueReport());
 
-                if (this.IsDisposed) return;                     // Form đã bị đóng trong lúc chờ
+                if (this.IsDisposed) return;                  
 
-                // Đã quay lại UI thread nên gán thẳng vào control được
                 dgvReport.DataSource = rows;
                 FormatReportGrid();
                 lblTotal.Text = "Tổng doanh thu: " + rows.Sum(r => r.Revenue).ToString("N0") + " đ";
@@ -80,7 +71,6 @@ namespace Bai3_MdiSupermarket
             }
         }
 
-        // Chạy trên THREAD PHỤ: tuyệt đối không đụng tới control ở đây
         private List<RevenueRow> BuildRevenueReport()
         {
             Random rnd = new Random(2026);
@@ -107,16 +97,12 @@ namespace Bai3_MdiSupermarket
             dgvReport.Columns["Orders"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
         }
 
-        // Nút chứng minh UI không bị đơ: bấm bao nhiêu lần trong lúc đang tải cũng được
         private void btnTestUi_Click(object sender, EventArgs e)
         {
             clickCount++;
             lblClickCount.Text = "Số lần bấm: " + clickCount;
         }
 
-        // =====================================================================
-        // Scenario C: tiến trình nền cập nhật giao diện an toàn (cross-thread)
-        // =====================================================================
         private void btnToggleSync_Click(object sender, EventArgs e)
         {
             if (syncCts == null)
@@ -145,11 +131,11 @@ namespace Bai3_MdiSupermarket
                 {
                     try
                     {
-                        await Task.Delay(2000, token);           // Chờ 2 giây (không chiếm thread)
+                        await Task.Delay(2000, token);     
                     }
                     catch (OperationCanceledException)
                     {
-                        break;                                   // Bị hủy khi đang chờ -> thoát vòng lặp
+                        break;                              
                     }
 
                     // Giả lập dữ liệu "mới" lấy từ server
@@ -172,7 +158,6 @@ namespace Bai3_MdiSupermarket
             }
         }
 
-        // Hàm này có thể được gọi từ BẤT KỲ thread nào
         private void UpdateSyncUi(string time, decimal rate, int newOrders)
         {
             if (this.IsDisposed) return;
@@ -182,7 +167,6 @@ namespace Bai3_MdiSupermarket
             {
                 try
                 {
-                    // Invoke: nhờ UI thread chạy lại chính hàm này với cùng tham số, rồi chờ nó xong
                     this.Invoke(new Action<string, decimal, int>(UpdateSyncUi), time, rate, newOrders);
                 }
                 catch (ObjectDisposedException) { }              // Form vừa đóng đúng lúc: bỏ qua
@@ -190,7 +174,6 @@ namespace Bai3_MdiSupermarket
                 return;
             }
 
-            // ---- Từ đây chắc chắn đang ở UI thread, được phép đụng vào control ----
             totalNewOrders += newOrders;
 
             lblRate.Text = rate.ToString("N0");
@@ -201,7 +184,6 @@ namespace Bai3_MdiSupermarket
             if (dgvSync.Rows.Count > 50)
                 dgvSync.Rows.RemoveAt(dgvSync.Rows.Count - 1);              // Giữ tối đa 50 dòng nhật ký
 
-            // Báo luôn lên StatusStrip của form cha
             frmMain main = this.MdiParent as frmMain;
             if (main != null)
                 main.SetSyncText("Đồng bộ: " + time + " | USD " + rate.ToString("N0"));

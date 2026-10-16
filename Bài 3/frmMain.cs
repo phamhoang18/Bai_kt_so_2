@@ -12,8 +12,6 @@ namespace Bai3_MdiSupermarket
             InitializeComponent();
         }
 
-        // ===== Scenario A: mở form con, nếu đã mở thì đưa lên trước =====
-        // Generic: T là bất kỳ Form nào có constructor không tham số
         private void OpenChild<T>() where T : Form, new()
         {
             foreach (Form child in this.MdiChildren)
@@ -42,7 +40,6 @@ namespace Bai3_MdiSupermarket
             OpenChild<frmAsyncReport>();
         }
 
-        // Đề bài không có form riêng cho "Nhập xuất"
         private void mnuStock_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Chức năng Quản lý Nhập xuất chưa được xây dựng trong phạm vi bài này.",
@@ -67,7 +64,6 @@ namespace Bai3_MdiSupermarket
             this.Close();
         }
 
-        // ===== Menu Cửa sổ =====
         private void mnuCascade_Click(object sender, EventArgs e)
         {
             this.LayoutMdi(MdiLayout.Cascade);               
@@ -85,7 +81,6 @@ namespace Bai3_MdiSupermarket
 
         // ===== Các hàm công khai cho form con gọi (luôn gọi từ UI thread) =====
 
-        // Bật/tắt ProgressBar dùng chung
         public void SetBusy(bool busy)
         {
             busyCount += busy ? 1 : -1;
@@ -95,7 +90,6 @@ namespace Bai3_MdiSupermarket
             tslStatus.Text = busyCount > 0 ? "Đang xử lý dữ liệu..." : "Sẵn sàng";
         }
 
-        // Hiển thị thông tin đồng bộ nền lên StatusStrip
         public void SetSyncText(string text)
         {
             tslSync.Text = text;

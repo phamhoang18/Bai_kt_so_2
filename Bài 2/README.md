@@ -1,10 +1,10 @@
-# BÁO CÁO BÀI TẬP 1
+# BÁO CÁO BÀI TẬP 2
 ## THÔNG TIN SINH VIÊN 
 - **Họ và tên:** Phạm Huy Hoàng
 - **Mã số sinh viên:** 24810340415 
 - **Lớp:** D19CNPM3
 - **Tên môn học:** Lập trình C# / Windows Forms 
-- **Tên bài tập:** BÀI 1: XÂY DỰNG ỨNG DỤNG QUẢN LÝ DANH MỤC THIẾT BỊ ĐIỆN TỬ (CƠ BẢN & DATA BINDING)
+- **Tên bài tập:** BÀI 2: PHẦN MỀM QUẢN LÝ KHO VÀ XUẤT BÁO CÁO TỔNG HỢP (TRUNG CẤP & SYSTEM DIALOGS)
 --- 
 ## KẾT QUẢ THỰC HÀNH 
 ### 1. Ảnh màn hình Giao diện chính 

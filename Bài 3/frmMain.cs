@@ -5,7 +5,7 @@ namespace Bai3_MdiSupermarket
 {
     public partial class frmMain : Form
     {
-        private int busyCount = 0;                               // Số tác vụ nặng đang chạy (nhiều form con có thể chạy cùng lúc)
+        private int busyCount = 0;                             
 
         public frmMain()
         {
@@ -18,17 +18,17 @@ namespace Bai3_MdiSupermarket
         {
             foreach (Form child in this.MdiChildren)
             {
-                if (child is T)                                  // Form kiểu T đã được mở rồi
+                if (child is T)                                
                 {
                     if (child.WindowState == FormWindowState.Minimized)
                         child.WindowState = FormWindowState.Normal;
-                    child.Activate();                            // Mang lên trước
+                    child.Activate();                        
                     return;
                 }
             }
 
-            T newChild = new T();                                // Chưa có thì tạo mới
-            newChild.MdiParent = this;                           // Gán form cha để nó nằm bên trong frmMain
+            T newChild = new T();                            
+            newChild.MdiParent = this;                          
             newChild.Show();
         }
 
@@ -55,7 +55,7 @@ namespace Bai3_MdiSupermarket
             if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                foreach (Form child in this.MdiChildren)         // MdiChildren trả về bản sao nên đóng trong vòng lặp an toàn
+                foreach (Form child in this.MdiChildren)        
                     child.Close();
 
                 tslUser.Text = "Người dùng: (đã đăng xuất)";
@@ -70,17 +70,17 @@ namespace Bai3_MdiSupermarket
         // ===== Menu Cửa sổ =====
         private void mnuCascade_Click(object sender, EventArgs e)
         {
-            this.LayoutMdi(MdiLayout.Cascade);                   // Xếp chồng lệch nhau
+            this.LayoutMdi(MdiLayout.Cascade);               
         }
 
         private void mnuTileH_Click(object sender, EventArgs e)
         {
-            this.LayoutMdi(MdiLayout.TileHorizontal);            // Xếp ngang (chồng theo chiều dọc)
+            this.LayoutMdi(MdiLayout.TileHorizontal);        
         }
 
         private void mnuTileV_Click(object sender, EventArgs e)
         {
-            this.LayoutMdi(MdiLayout.TileVertical);              // Xếp dọc (cạnh nhau theo chiều ngang)
+            this.LayoutMdi(MdiLayout.TileVertical);             
         }
 
         // ===== Các hàm công khai cho form con gọi (luôn gọi từ UI thread) =====
@@ -91,7 +91,7 @@ namespace Bai3_MdiSupermarket
             busyCount += busy ? 1 : -1;
             if (busyCount < 0) busyCount = 0;
 
-            tspbLoading.Visible = busyCount > 0;                 // Còn ít nhất 1 tác vụ thì vẫn hiện
+            tspbLoading.Visible = busyCount > 0;                 
             tslStatus.Text = busyCount > 0 ? "Đang xử lý dữ liệu..." : "Sẵn sàng";
         }
 

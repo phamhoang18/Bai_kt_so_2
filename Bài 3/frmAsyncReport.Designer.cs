@@ -36,7 +36,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSync)).BeginInit();
             this.SuspendLayout();
 
-            // btnLoadReport: bấm để tải báo cáo bất đồng bộ
+            // btnLoadReport
             this.btnLoadReport.Location = new System.Drawing.Point(15, 15);
             this.btnLoadReport.Name = "btnLoadReport";
             this.btnLoadReport.Size = new System.Drawing.Size(210, 36);
@@ -88,7 +88,7 @@
             this.lblClickCount.Name = "lblClickCount";
             this.lblClickCount.Text = "Số lần bấm: 0";
 
-            // grpSync: đồng bộ nền mỗi 2 giây
+            // grpSync
             this.grpSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpSync.Controls.Add(this.lblRateCaption);
@@ -139,7 +139,7 @@
             this.btnToggleSync.UseVisualStyleBackColor = true;
             this.btnToggleSync.Click += new System.EventHandler(this.btnToggleSync_Click);
 
-            // dgvSync: nhật ký các lần đồng bộ (cột tạo bằng code trong Load)
+            // dgvSync
             this.dgvSync.AllowUserToAddRows = false;
             this.dgvSync.AllowUserToDeleteRows = false;
             this.dgvSync.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
